@@ -13,11 +13,19 @@ my $create = 1;#1 for create, 0 for remove
 if($create){
     
     my $currentPath = getcwd();
-    my $perl1 = "/usr/bin/perl $currentPath/check_QEjobs4heating.pl";
-    my $perl2 = "/usr/bin/perl $currentPath/submit4newHeat.pl";
+    my $log = "$currentPath/crontab.log";
+    my $cd = "cd $currentPath";
+    my $perl1 = "/usr/bin/perl $currentPath/check_QEjobs4heating.pl >> $log 2>&1";
+    my $echo1 = "echo \"\$(date) - Running check_QEjobs4heating.pl\"  >> $log 2>&1";
+    my $perl2 = "/usr/bin/perl $currentPath/submit4newHeat.pl  >> $log 2>&1";
+    my $echo2 = "echo \"\$(date) - Running submit4newHeat.pl\"  >> $log 2>&1";
+
+    my @cmd = ($cd,$echo1,$perl1,$echo2,$perl2);
+    my $cmd = join(" && ",@cmd);
+
 my $here_doc =<<"END_MESSAGE";
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
-0 */2 * * *  $perl1 ;sleep 3; $perl2 
+0 */4 * * *  $cmd
 END_MESSAGE
 
     open(FH, "> $currentPath/crontab_setting") or die $!;
