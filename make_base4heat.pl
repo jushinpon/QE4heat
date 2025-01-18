@@ -74,7 +74,7 @@ for my $f (@QEout_folders){
 
         # Find the index of the last occurrence of CELL_PARAMETERS
         my @last_index = grep { $lines[$_] =~ /CELL_PARAMETERS\s+\(angstrom\)/} 0 .. $#lines;
-        print "\$last_index: $last_index[-1]\n";
+        #print "\$last_index: $last_index[-1]\n";
         my $last_index4cell = $last_index[-1];
 
         #print "\$last_index: $lines[$last_index[-1]]\n";
@@ -84,7 +84,7 @@ for my $f (@QEout_folders){
         
         # Find the index of the last occurrence of ATOMIC_POSITIONS
         my @last_index4coord = grep { $lines[$_] =~ /ATOMIC_POSITIONS\s+\(angstrom\)/} 0 .. $#lines;
-        print "\$last_index: $last_index4coord[-1]\n";
+        #print "\$last_index: $last_index4coord[-1]\n";
         my $last_index4coord = $last_index4coord[-1];
         #print "\$last_index: $lines[$last_index[-1]]\n";
         # Extract the 3 lines of the CELL_PARAMETERS block
@@ -100,7 +100,7 @@ for my $f (@QEout_folders){
     $f =~ m|data4heat/(.*?)-T\d+-P\d+|;
     my $prefix = $1;
     $prefix =~ s/^\s+|\s+$//g;
-    print "$prefix\n";
+    #print "$prefix\n";
     print $FH1 "$prefix\n";#for checking status
 
     my $new_name = sprintf("$prefix-T%04d", $base_T);# for in,sout, slurm, and sout
@@ -113,21 +113,21 @@ for my $f (@QEout_folders){
 
     # Find the index of the last occurrence of CELL_PARAMETERS in QE in file
     my @index4in = grep {$in_lines[$_] =~ /CELL_PARAMETERS\s+\{angstrom\}/} 0 .. $#in_lines;
-    print "\$last_index: $index4in[-1]\n";
+    #print "\$last_index: $index4in[-1]\n";
     my $last_index4incell = $index4in[-1];
     #replacing new cwll info
     @in_lines[$last_index4incell + 1 .. $last_index4incell + 3] = @final_cell;
 
     # Find the index of the last occurrence of CELL_PARAMETERS
     my @last_index4coord = grep { $in_lines[$_] =~ /ATOMIC_POSITIONS\s+\{angstrom\}/} 0 .. $#in_lines;
-    print "\$last_index: $last_index4coord[-1]\n";
+    #print "\$last_index: $last_index4coord[-1]\n";
     my $last_index4coord = $last_index4coord[-1];
     #print "\$last_index: $lines[$last_index[-1]]\n";
     # Extract the 3 lines of the CELL_PARAMETERS block
     @in_lines[$last_index4coord + 1 .. $last_index4coord + $natom] = @final_coords;
     map { s/^\s+|\s+$//g; } @in_lines;
     my $updated_in = join("\n",@in_lines);
-    print "\$updated_in: $updated_in\n";
+#print "\$updated_in: $updated_in\n";
     open(my $UP, '>', "./heating/$new_name/$new_name.in") or die "Cannot open $new_name.in: $!";
     print $UP "$updated_in";
     close($UP);
@@ -174,173 +174,5 @@ END_MESSAGE
     open(FH, "> ./heating/$new_name/$new_name.sh") or die $!;
     print FH $here_doc;
     close(FH);
-    #`cp $slurm heating/$new_name/$new_name.sh`;
-
-
-   
-  #  for (@data_files){
-  #  print "$_\n";
-  #  }
-  #  die;
-  #  if(@data_files){#with JOB DONE        
-  #      $data_files[-1] =~ m|data4heat/(.*?)-T\d+-P\d+/data_files|;
-  #      #print "Matched string: $1\n";
-  #      my $prefix = $1;
-  #      $prefix =~ s/^\s+|\s+$//g;
-  #      #!
-  #     
-  #      `cp $data_files[-1] $currentPath/ref_data4heat/$prefix.data`;
-  #  }
-  #  else{
-  #      print "no data files in $f\n";
-  #      print $FH "$f\n";
-  #  }   
 }
-#close($FH);
-#system("cat ref_data4heat/No_data.txt");
-#print "\n\n!!!If all folders are listed, maybe you forget to conduct perl /opt/qe_perl/QEout2data.pl in advance.\n";
-
-
-
-
-
-=b
-for my $file (@md_out){
-    my @scfNu = `grep "^!" $file`;
-    my $scfNu = @scfNu;
-   # print "SCF NO: $scfNu\n";
-    my $multi_frame = "no";
-    my $md_path = `dirname $file`;
-    $md_path =~ s/^\s+|\s+$//g;
-    my $md_name = `basename $file`;
-    $md_name =~ s/^\s+|\s+$//g;
-    $md_name =~ s/\..*//g;
-    my $natom = `grep -m 1 "number of atoms/cell" $file|awk '{print \$5}'`;
-    die "No atom number was found in $file" unless ($natom); 
-    $natom =~ s/^\s+|\s+$//g;
-    my $ntype = `grep -m 1 "number of atomic types" $file|awk '{print \$6}'`;
-    die "No atom type was found in $file" unless ($ntype); 
-    $ntype =~ s/^\s+|\s+$//g;
-
-    #get cell information of all frames
-    #CELL_PARAMETERS (angstrom)
-    #5.631780735   0.001261244   0.001887268
-    my @AllCELL_PARAMETERS = `grep -A3 "CELL_PARAMETERS (angstrom)" $file|grep -v "CELL_PARAMETERS (angstrom)"|grep -v -- '--'`;
-    map { s/^\s+|\s+$//g; } @AllCELL_PARAMETERS; 
-   
-    unless(@AllCELL_PARAMETERS){
-        @AllCELL_PARAMETERS = `grep -A3 'CELL_PARAMETERS {angstrom}' $file|grep -v 'CELL_PARAMETERS {angstrom}'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @AllCELL_PARAMETERS; 
-    }    
-    unless(@AllCELL_PARAMETERS){
-        my $path = `dirname $file`;
-        $path =~ s/^\s+|\s+$//g;
-        my $filename = `basename $file`;
-        $filename =~ s/^\s+|\s+$//g;
-        $filename =~ s/\..*//g;
-        #print "\$filename: $filename\n";
-        #print "$path/$filename\n";
-        @AllCELL_PARAMETERS = `grep -A3 "CELL_PARAMETERS (angstrom)" $path/$filename.in|grep -v 'CELL_PARAMETERS (angstrom)'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @AllCELL_PARAMETERS; 
-    }
-    
-    unless(@AllCELL_PARAMETERS){
-        my $path = `dirname $file`;
-        $path =~ s/^\s+|\s+$//g;
-        my $filename = `basename $file`;
-        $filename =~ s/^\s+|\s+$//g;
-        $filename =~ s/\..*//g;
-        #print "\$filename: $filename\n";
-        #print "$path/$filename\n";
-        @AllCELL_PARAMETERS = `grep -A3 "CELL_PARAMETERS {angstrom}" $path/$filename.in|grep -v 'CELL_PARAMETERS {angstrom}'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @AllCELL_PARAMETERS; 
-    }
-
-    die "No CELL_PARAMETERS were found in $file" unless (@AllCELL_PARAMETERS); 
-    #my @box;#array of array, equal to frame numbers
-    my $frameNo =  @AllCELL_PARAMETERS/3;
-    if($frameNo < $scfNu){
-       $frameNo =  $scfNu;
-       $multi_frame = "yes";
-    }
-    
-    if($multi_frame eq "yes"){@AllCELL_PARAMETERS = (@AllCELL_PARAMETERS) x $frameNo}
-
-    #get atom coords information of all frames
-    #ATOMIC_POSITIONS (angstrom)
-    #Co            2.7414458575        2.7928470261        2.8314219861
-    my @Allcoords = `grep -A $natom "ATOMIC_POSITIONS (angstrom)" $file|grep -v "ATOMIC_POSITIONS (angstrom)"|grep -v -- '--'`;
-    map { s/^\s+|\s+$//g; } @Allcoords;
-
-    unless(@Allcoords){
-        @Allcoords = `grep -A $natom "ATOMIC_POSITIONS {angstrom}" $file|grep -v "ATOMIC_POSITIONS {angstrom}"|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @Allcoords; 
-    }    
-    unless(@Allcoords){
-        my $path = `dirname $file`;
-        $path =~ s/^\s+|\s+$//g;
-        my $filename = `basename $file`;
-        $filename =~ s/^\s+|\s+$//g;
-        $filename =~ s/\..*//g;
-        #print "\$filename: $filename\n";
-        #print "$path/$filename\n";
-        @Allcoords = `grep -A $natom "ATOMIC_POSITIONS (angstrom)" $path/$filename.in|grep -v 'ATOMIC_POSITIONS (angstrom)'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @Allcoords; 
-    }
-    
-    unless(@Allcoords){
-        my $path = `dirname $file`;
-        $path =~ s/^\s+|\s+$//g;
-        my $filename = `basename $file`;
-        $filename =~ s/^\s+|\s+$//g;
-        $filename =~ s/\..*//g;
-        #print "\$filename: $filename\n";
-        #print "$path/$filename\n";
-        @Allcoords = `grep -A $natom "ATOMIC_POSITIONS {angstrom}" $path/$filename.in|grep -v 'ATOMIC_POSITIONS {angstrom}'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @Allcoords; 
-    }
-
-    #print "@Allcoords\n";
-    #if($multi_frame eq "yes"){@extended_array = (@original_array) x 100}
-    #die;
-    #my @coords_set;#array of array using slicing, equal to frame numbers
-    #if($multi_frame eq "yes"){@Allcoords = (@Allcoords) x $frameNo}
-    my $coordSetNo =  @Allcoords/$natom;
-    #print "$frameNo $coordSetNo\n";
-    die "cell number is not equal to coord set number in $file\n" if($coordSetNo != $frameNo);
-    #element types of atoms for all frames
-
-    my @Alltypes = `grep -A $natom "ATOMIC_POSITIONS (angstrom)" $file|grep -v "ATOMIC_POSITIONS (angstrom)"|awk '{print \$1}'|grep -v -- '--'`;
-    map { s/^\s+|\s+$//g; } @Alltypes;
-
-
-    unless(@Alltypes){
-        @Alltypes = `grep -A $natom "ATOMIC_POSITIONS {angstrom}" $file|grep -v "ATOMIC_POSITIONS {angstrom}"|awk '{print \$1}'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @Alltypes; 
-    }    
-    unless(@Alltypes){
-        my $path = `dirname $file`;
-        $path =~ s/^\s+|\s+$//g;
-        my $filename = `basename $file`;
-        $filename =~ s/^\s+|\s+$//g;
-        $filename =~ s/\..*//g;
-        #print "\$filename: $filename\n";
-        #print "$path/$filename\n";
-        @Alltypes = `grep -A $natom "ATOMIC_POSITIONS (angstrom)" $path/$filename.in|grep -v "ATOMIC_POSITIONS (angstrom)"|awk '{print \$1}'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @Alltypes; 
-    }
-    
-    unless(@Alltypes){
-        my $path = `dirname $file`;
-        $path =~ s/^\s+|\s+$//g;
-        my $filename = `basename $file`;
-        $filename =~ s/^\s+|\s+$//g;
-        $filename =~ s/\..*//g;
-        #print "\$filename: $filename\n";
-        #print "$path/$filename\n";
-        @Alltypes = `grep -A $natom "ATOMIC_POSITIONS {angstrom}" $path/$filename.in|grep -v "ATOMIC_POSITIONS {angstrom}"|awk '{print \$1}'|grep -v -- '--'`;
-        map { s/^\s+|\s+$//g; } @Alltypes; 
-    }
-
-
-=cut
+close($FH1);
