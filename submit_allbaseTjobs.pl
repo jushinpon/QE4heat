@@ -28,16 +28,13 @@ my @all_files = `find $currentPath/$filefold -maxdepth 2 -mindepth 2 -type f -na
 map { s/^\s+|\s+$//g; } @all_files;
 
 for my $i (@all_files){
-    print "1. $i\n";
     my $dirname = `dirname $i`;
     $dirname =~ s/^\s+|\s+$//g;
-    print "2. $dirname\n";
 
     chdir($dirname);
     my $prefix = `basename $i`;
     $prefix =~ s/^\s+|\s+$//g;
     $prefix =~ s/\.sh//g;
-    print "3. $prefix\n";
 
     unlink "$prefix.sout";
     `sbatch $prefix.sh`;

@@ -1,12 +1,21 @@
 =b
-filter required data files and collect them into data4relax folder.
+This script is used to prepare the base files for heating simulations using Quantum Espresso (QE).
+It sets up the necessary parameters and directories for the simulations.
+
+Usage:
+    perl make_base4heat.pl
+
+Summary:
+    - Sets the current working directory.
+    - Defines the source folder containing structures to heat.
+    - Sets the base temperature for heating.
+    - Defines QE parameters to modify.
+    - Sets SLURM batch parameters for job submission.
 =cut
 use strict;
 use warnings;
 use Cwd;
 use POSIX;
-
-
 
 #
 my $currentPath = getcwd();
@@ -15,7 +24,7 @@ my $base_T = 700; #base temperature to heat, it's better to 100 higher than the 
 #my $data_folder = "data_files";
 my %para =(#you may set QE parameters you want to modify here. Keys should be the same as used in QE
     dt => 50,
-    nstep => 10    
+    nstep => 200    
 );
 
 my %sbatch_para = (
@@ -149,9 +158,10 @@ my $here_doc =<<"END_MESSAGE";
 #SBATCH --nodes=$sbatch_para{nodes}
 #SBATCH --cpus-per-task=$sbatch_para{threads}
 #SBATCH --partition=$sbatch_para{partition}
+#SBATCH --reservation=script_test #remove this line if you don't have a reservation
 ##SBATCH --ntasks-per-node=12
 ##SBATCH --exclude=node23
-source /opt/intel/oneapi/setvars.sh
+#source /opt/intel/oneapi/setvars.sh
 rm -rf pwscf*
 node=$sbatch_para{nodes}
 threads=$sbatch_para{threads}

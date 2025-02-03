@@ -1,0 +1,17 @@
+Mon Feb  3 12:00:01 CST 2025 - Running check_QEjobs4heating.pl
+Smartmatch is experimental at /home/jsp/2H-WTe2/QE4heat/check_QEjobs4heating.pl line 136.
+Smartmatch is experimental at /home/jsp/2H-WTe2/QE4heat/check_QEjobs4heating.pl line 169.
+Smartmatch is experimental at /home/jsp/2H-WTe2/QE4heat/check_QEjobs4heating.pl line 188.
+
+!!!!!No jobs are dead so far!
+
+
+!!!!!No jobs are running currently!
+
+
+!!!!!No jobs for new heating!
+
+
+Done/Total: 147/147
++++++Check End+++++++
+Mon Feb  3 12:00:01 CST 2025 - Running submit4newHeat.pl

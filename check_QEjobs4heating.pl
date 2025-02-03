@@ -11,7 +11,7 @@ require './updated_QEin.pl';#QE output to npy files
 #**************************************
 my $base_T = 700; #base temperature to heat, it's better to 100 higher than the temperatures used in data4heat
 my $incr_T = 100; #temperature increment for each T elevation step.
-my $heating_times = 10; #$incr_T * $heating_times = total temperature increase for the base temperature. Total jobs = $heating_times + 1 (base)
+my $heating_times = 20; #$incr_T * $heating_times = total temperature increase for the base temperature. Total jobs = $heating_times + 1 (base)
 #*************************************
 
 my $whoami = `whoami`;#get username first
