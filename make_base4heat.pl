@@ -20,7 +20,7 @@ use POSIX;
 #
 my $currentPath = getcwd();
 my $source_folder = "data4heat";#all structures you want to heat (both in and sout files)
-my $base_T = 700; #base temperature to heat, it's better to 100 higher than the temperatures used in data4heat
+my $base_T = 10; #base temperature to heat, it's better to 100 higher than the temperatures used in data4heat
 #my $data_folder = "data_files";
 my %para =(#you may set QE parameters you want to modify here. Keys should be the same as used in QE
     dt => 50,

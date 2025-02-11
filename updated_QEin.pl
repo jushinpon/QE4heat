@@ -150,11 +150,19 @@ my $here_doc =<<"END_MESSAGE";
 ##SBATCH --ntasks-per-node=12
 #SBATCH --reservation=script_test #remove this line if you don't have a reservation
 ##SBATCH --exclude=node23
+#SBATCH --nodelist=master
 #source /opt/intel/oneapi/setvars.sh
 rm -rf pwscf*
 node=$sbatch_para{nodes}
 threads=$sbatch_para{threads}
-processors=\$(nproc)
+# Determine the number of processors based on the hostname
+if [ "\$(hostname)" = "master" ]; then
+    processors=24
+else
+    processors=\$(nproc)
+fi
+
+#processors=\$(nproc)
 np=\$((\$node*\$processors/\$threads))
 export OMP_NUM_THREADS=\$threads
 #the following two are for AMD CPU if slurm chooses for you!!
