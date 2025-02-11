@@ -1,2 +1,2 @@
 PATH=/opt/anaconda3/bin:/opt/anaconda3/condabin:/opt/miniconda3/bin:/opt/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
-0 */4 * * *  cd /home/jsp/2H-WTe2/QE4heat && bash /home/jsp/2H-WTe2/QE4heat/heating_bash.sh
+0 */4 * * *  cd /home/jsp1/AlP/QE4heat && bash /home/jsp1/AlP/QE4heat/heating_bash.sh
