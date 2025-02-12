@@ -122,6 +122,16 @@ for my $f (@QEout_folders){#get required QE input and output files
     my $last_index4coord = $last_index4coord[-1];
     #print "\$last_index: $lines[$last_index[-1]]\n";
     # Extract the 3 lines of the CELL_PARAMETERS block
+
+    my @perturbed_coords = map { perturb_coords($_) } @final_coords;
+    
+    # Ensure no undefined values due to incorrect parsing
+    @perturbed_coords = grep { defined $_ } @perturbed_coords;
+    
+    # Replace the final coordinates with perturbed values
+    @final_coords = @perturbed_coords;
+
+
     @in_lines[$last_index4coord + 1 .. $last_index4coord + $natom] = @final_coords;
     map { s/^\s+|\s+$//g; } @in_lines;
     my $updated_in = join("\n",@in_lines);
@@ -184,4 +194,17 @@ END_MESSAGE
 }
 
 }#end sub
+
+# Function to perturb coordinates by ±0.05
+sub perturb_coords {
+    my ($line) = @_;
+    my @cols = split(/\s+/, $line);
+    return unless scalar(@cols) >= 4;
+    
+    for my $i (1..3) { # Perturb x, y, and z
+        my $perturbation = (rand() * 0.1) - 0.05; # Generate random value between -0.05 and 0.05
+        $cols[$i] += $perturbation;
+    }
+    return join(" ", @cols);
+}
 1;
