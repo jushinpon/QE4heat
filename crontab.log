@@ -1,21 +1,23 @@
-Tue Feb 11 12:00:02 CST 2025 - Running check_QEjobs4heating.pl
-Smartmatch is experimental at /home/jsp1/AlP/QE4heat/check_QEjobs4heating.pl line 136.
-Smartmatch is experimental at /home/jsp1/AlP/QE4heat/check_QEjobs4heating.pl line 169.
-Smartmatch is experimental at /home/jsp1/AlP/QE4heat/check_QEjobs4heating.pl line 188.
+Fri Mar 14 16:18:31 CST 2025 - Running check_QEjobs4heating.pl
+Smartmatch is experimental at /home/jsp/AlP/QE4heat/check_QEjobs4heating.pl line 136.
+Smartmatch is experimental at /home/jsp/AlP/QE4heat/check_QEjobs4heating.pl line 169.
+Smartmatch is experimental at /home/jsp/AlP/QE4heat/check_QEjobs4heating.pl line 188.
 
 !!!!!No jobs are dead so far!
 
 
-++++++++++++
-The running cases are:
-**5184       All C_AlPNT-     jsp1  R 1-12:00:00      1 master
- 42/100: in /home/jsp1/AlP/QE4heat/heating/C_AlPNT-T1010/C_AlPNT-T1010.in
+!!!!!No jobs are running currently!
+
 
 ++++++++++++
+The new heating cases are:
+/home/jsp/AlP/QE4heat/heating/Al3P_mp-1183180-T1050/Al3P_mp-1183180-T1050.in
+/home/jsp/AlP/QE4heat/heating/AlP_mp-1550-T1050/AlP_mp-1550-T1050.in
+/home/jsp/AlP/QE4heat/heating/AlP_mp-8880-T1050/AlP_mp-8880-T1050.in
+/home/jsp/AlP/QE4heat/heating/AlP_mp-997569-T1050/AlP_mp-997569-T1050.in
+/home/jsp/AlP/QE4heat/heating/AlP2_mp-1182873-T1050/AlP2_mp-1182873-T1050.in
+++++++++++++
 
-!!!!!No jobs for new heating!
-
-
-Done/Total: 4/11
+Done/Total: 5/45
 +++++Check End+++++++
-Tue Feb 11 12:00:02 CST 2025 - Running submit4newHeat.pl
+Fri Mar 14 16:18:32 CST 2025 - Running submit4newHeat.pl

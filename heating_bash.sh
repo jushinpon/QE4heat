@@ -14,6 +14,6 @@ else
     exit 1  # Exit the script if neither exists
 fi
 
-rm -f /home/jsp1/AlP/QE4heat/crontab.log
+rm -f /home/jsp/AlP/QE4heat/crontab.log
 
-cd /home/jsp1/AlP/QE4heat && echo "$(date) - Running check_QEjobs4heating.pl"  >> /home/jsp1/AlP/QE4heat/crontab.log 2>&1 && /usr/bin/perl /home/jsp1/AlP/QE4heat/check_QEjobs4heating.pl >> /home/jsp1/AlP/QE4heat/crontab.log 2>&1 && echo "$(date) - Running submit4newHeat.pl"  >> /home/jsp1/AlP/QE4heat/crontab.log 2>&1 && /usr/bin/perl /home/jsp1/AlP/QE4heat/submit4newHeat.pl  >> /home/jsp1/AlP/QE4heat/crontab.log 2>&1
+cd /home/jsp/AlP/QE4heat && echo "$(date) - Running check_QEjobs4heating.pl"  >> /home/jsp/AlP/QE4heat/crontab.log 2>&1 && /usr/bin/perl /home/jsp/AlP/QE4heat/check_QEjobs4heating.pl >> /home/jsp/AlP/QE4heat/crontab.log 2>&1 && echo "$(date) - Running submit4newHeat.pl"  >> /home/jsp/AlP/QE4heat/crontab.log 2>&1 && /usr/bin/perl /home/jsp/AlP/QE4heat/submit4newHeat.pl  >> /home/jsp/AlP/QE4heat/crontab.log 2>&1

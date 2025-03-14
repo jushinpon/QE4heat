@@ -16,7 +16,7 @@ my $currentPath = getcwd();
 my $source_folder = "heating";#all structures you want to heat (both in and sout files)
 #my $data_folder = "data_files";
 my %para =(#you may set QE parameters you want to modify here. Keys should be the same as used in QE
-    dt => 50,
+    dt => 25,
     nstep => 100,
     tempw => "$next_T"    
 );
@@ -160,7 +160,7 @@ my $here_doc =<<"END_MESSAGE";
 ##SBATCH --ntasks-per-node=12
 #SBATCH --reservation=script_test #remove this line if you don't have a reservation
 ##SBATCH --exclude=node23
-#SBATCH --nodelist=master
+##SBATCH --nodelist=All
 #source /opt/intel/oneapi/setvars.sh
 rm -rf pwscf*
 node=$sbatch_para{nodes}

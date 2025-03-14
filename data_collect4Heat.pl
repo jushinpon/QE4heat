@@ -27,12 +27,12 @@ my $currentPath = getcwd();
 
 # Array of source directories to search for data
 my @source = (
-    "/home/jsp/2H-WTe2/QE_from_MatCld/QEall_set/"
+    "/home/jsp/AlP/QE_from_MatCld/QEall_set/"
 );
 
 # Array of patterns to match files in the source directories
 # Each pattern corresponds to the respective source directory
-my @pattern = ('-name "*Te*" -name "*W*" -name "*600*"');# ! -name "*H*"');
+my @pattern = ('-iname "*Al*P*" -name "*600*" ! -iname "*Al_*"');# ! -name "*H*"');
 
 # Loop through each source directory
 for my $s (0 .. $#source) {

@@ -20,11 +20,11 @@ use POSIX;
 #
 my $currentPath = getcwd();
 my $source_folder = "data4heat";#all structures you want to heat (both in and sout files)
-my $base_T = 600; #base temperature to heat, it's better to 100 higher than the temperatures used in data4heat
+my $base_T = 800; #base temperature to heat, it's better to 100 higher than the temperatures used in data4heat
 #my $data_folder = "data_files";
 my %para =(#you may set QE parameters you want to modify here. Keys should be the same as used in QE
-    dt => 50,
-    nstep => 100    
+    dt => 25,
+    nstep => 200    
 );
 
 my %sbatch_para = (
