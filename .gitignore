@@ -6,3 +6,5 @@ output.data
 QE_trimmed/
 QEall_set/
 **/
+
+crontab.log
